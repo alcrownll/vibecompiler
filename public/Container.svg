@@ -1,0 +1,30 @@
+<svg width="1160" height="442" viewBox="0 0 1160 442" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g filter="url(#filter0_iii_4014_6833)">
+<path d="M0 32C0 14.3269 14.3269 0 32 0H1128C1145.67 0 1160 14.3269 1160 32V410C1160 427.673 1145.67 442 1128 442H32C14.3269 442 0 427.673 0 410V32Z" fill="#070312" fill-opacity="0.04"/>
+</g>
+<defs>
+<filter id="filter0_iii_4014_6833" x="0" y="0" width="1160.5" height="474" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="32"/>
+<feGaussianBlur stdDeviation="32"/>
+<feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.360784 0 0 0 0 0.227451 0 0 0 0 0.894118 0 0 0 0.08 0"/>
+<feBlend mode="normal" in2="shape" result="effect1_innerShadow_4014_6833"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feMorphology radius="0.5" operator="dilate" in="SourceAlpha" result="effect2_innerShadow_4014_6833"/>
+<feOffset dx="1" dy="1"/>
+<feGaussianBlur stdDeviation="0.5"/>
+<feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.360784 0 0 0 0 0.227451 0 0 0 0 0.894118 0 0 0 0.5 0"/>
+<feBlend mode="normal" in2="effect1_innerShadow_4014_6833" result="effect2_innerShadow_4014_6833"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset/>
+<feGaussianBlur stdDeviation="0.5"/>
+<feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1"/>
+<feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.4 0"/>
+<feBlend mode="normal" in2="effect2_innerShadow_4014_6833" result="effect3_innerShadow_4014_6833"/>
+</filter>
+</defs>
+</svg>
