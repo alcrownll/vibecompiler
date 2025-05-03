@@ -2,7 +2,7 @@ import { Routes, Route } from 'react-router-dom';
 import TopNavigation from './TopNavigation';
 import Home from './pages/Home';
 import Documentation from './pages/Documentation';
-import Compiler from './pages/Compiler';
+import Playground from './pages/Playground';
 
 const VibeCompiler = () => {
   return (
@@ -18,7 +18,7 @@ const VibeCompiler = () => {
         <Routes>
           <Route path="home" element={<Home />} />
           <Route path="docs" element={<Documentation />} />
-          <Route path="compiler" element={<Compiler />} />
+          <Route path="playground" element={<Playground />} />
         </Routes>
       </div>
     </div>

@@ -1,6 +1,8 @@
 import { useNavigate, useLocation } from 'react-router-dom';
 import CustomDropdown from './CustomDropdown';
 
+
+
 const TopNavigation: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -10,7 +12,7 @@ const TopNavigation: React.FC = () => {
 
   return (
     <div
-      className="w-full flex items-center justify-between text-white py-10"
+      className="sticky top-0 w-full flex items-center justify-between text-white py-10"
       style={{
         backgroundImage: "url('/TopNavBG.png')",
         backgroundRepeat: 'no-repeat',
@@ -48,10 +50,10 @@ const TopNavigation: React.FC = () => {
           Documentation
         </button>
         <button
-          onClick={() => navigate('/vibeprogramminglanguage/compiler')}
-          className={`bg-transparent border-none p-0 m-0 transition ${isActive('/vibeprogramminglanguage/compiler') ? 'text-transparent bg-clip-text bg-gradient-to-r from-[#BF2ECE] to-[#881CE5]' : 'text-white'}`}
+          onClick={() => navigate('/vibeprogramminglanguage/playground')}
+          className={`bg-transparent border-none p-0 m-0 transition ${isActive('/vibeprogramminglanguage/playground') ? 'text-transparent bg-clip-text bg-gradient-to-r from-[#BF2ECE] to-[#881CE5]' : 'text-white'}`}
         >
-          Compiler
+          Playground
         </button>
         <button
           onClick={() => navigate('/vibeprogramminglanguage/developers')}
