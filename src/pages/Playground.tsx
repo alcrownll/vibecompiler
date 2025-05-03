@@ -1,7 +1,13 @@
-const Playground = () => {
+import CodeEditor from '../CodeEditor';
+import Output from '../Output'; // Import the Output component
+
+const Compiler = () => {
+  // Sample output state - in a real app, this would come from running the code
+  const outputText = ""; // Initially empty, will be populated when code runs
+
   return (
     <div className="min-h-screen text-white px-4 flex flex-col items-center justify-start py-10">
-      
+
       {/* Top Container */}
       <div className="w-full max-w-7xl flex justify-between items-center mb-6 px-2">
         {/* Left Text */}
@@ -18,16 +24,16 @@ const Playground = () => {
 
       {/* Bottom Container */}
       <div className="flex w-full max-w-7xl space-x-4">
-        
+
         {/* Left Container */}
         <div className="w-3/4 relative rounded-lg overflow-hidden min-h-[500px]">
           <div
             className="absolute inset-0 bg-cover bg-center opacity-10"
             style={{ backgroundImage: "url('/BiggerContainer.svg')" }}
           ></div>
-          <div className="relative p-6 z-10">
-            <h2 className="text-xl font-semibold">Left Container</h2>
-            <p>For Code Editor</p>
+          {/* Code Editor mounted here */}
+          <div className="relative z-10 h-[500px]">
+            <CodeEditor language="javascript" />
           </div>
         </div>
 
@@ -37,9 +43,9 @@ const Playground = () => {
             className="absolute inset-0 bg-cover bg-center opacity-10"
             style={{ backgroundImage: "url('/BiggerContainer.svg')" }}
           ></div>
-          <div className="relative p-6 z-10">
-            <h2 className="text-xl font-semibold">Right Container</h2>
-            <p>For Output</p>
+          {/* Terminal Output */}
+          <div className="relative z-10 w-full h-full">
+            <Output output={outputText} />
           </div>
         </div>
       </div>

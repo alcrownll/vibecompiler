@@ -23,7 +23,7 @@ const Home = () => {
 
       <div className="flex space-x-4 mt-2 mb-6">
         <div className="p-[2px] rounded-full bg-gradient-to-r from-[#BF2ECE] to-[#881CE5] inline-block hover:opacity-90 transition">
-          <button 
+          <button
             className="bg-[#0F0A27] text-white font-semibold py-3 px-14 rounded-full"
             onClick={() => navigate('/vibeprogramminglanguage/docs')}
           >
