@@ -1,111 +1,10 @@
-def enhanced_tokenize(code):
-    tokens = []
-    error_collector = ErrorCollector()
-    line_num = 1
-    line_start = 0
-    
-    token_specification = [
-        # Core keywords
-        ('PROGRAM',     r'starterPack'),
-        ('PRINT',       r'shoutout'),
-        ('IF',          r'smash'),        
-        ('ELSEIF',      r'maybe'),
-        ('ELSE',        r'pass'),
-        ('WHILE',       r'grind'),
-        ('FOR',         r'yeet'),
-        ('FUNCTION',    r'serve'),
-        ('BREAK',       r'staph'),
-       
-        # Data types
-        ('INTEGER_TYPE', r'clout'),
-        ('FLOAT_TYPE',   r'ratio'),
-        ('STRING_TYPE',  r'tea'),        
-        ('BOOLEAN_TYPE', r'mood'),
-        ('ARRAY_TYPE',   r'gang'),
-        ('DICT_TYPE',    r'wiki'),
-       
-        # Constants
-        ('TRUE',        r'noCap'),
-        ('FALSE',       r'cap'),
-        ('NULL',        r'ghosted'),
-       
-        # Other functions
-        ('TYPEOF',      r'itsGiving'),
-        ('INPUT',       r'spillTheTea'),
-        ('SWITCH',      r'chooseYourFighter'),
-        ('TRY',         r'tryhard-flopped'),
-        ('CATCH',       r'flopped'),
-       
-        # Literals
-        ('NUMBER',      r'\d+(\.\d+)?'),
-        ('STRING',      r'"([^"\\]|\\.)*"'),
-       
-        # Symbols
-        ('LPAREN',      r'\('),
-        ('RPAREN',      r'\)'),
-        ('LBRACE',      r'\{'),
-        ('RBRACE',      r'\}'),
-        ('LBRACKET',    r'\['),
-        ('RBRACKET',    r'\]'),
-        ('SEMICOLON',   r';'),
-        ('COMMA',       r','),
-        ('DOT',         r'\.'),
-        ('COLON',       r':'),
-       
-        # Operators
-        ('OP',          r'[+\-*/=<>!&|]+'),
-       
-        # Misc
-        ('IDENTIFIER',  r'[a-zA-Z_]\w*'),
-        ('COMMENT',     r'~.*'),
-        ('NEWLINE',     r'\n'),
-        ('SKIP',        r'[ \t]+'),
-        ('MISMATCH',    r'.'),
-    ]
-    
-    tok_regex = '|'.join(f'(?P<{name}>{pattern})' for name, pattern in token_specification)
-    
-    for mo in re.finditer(tok_regex, code):
-        kind = mo.lastgroup
-        value = mo.group()
-        column = mo.start() - line_start
-        
-        if kind == 'NEWLINE':
-            line_start = mo.end()
-            line_num += 1
-        elif kind == 'SKIP' or kind == 'COMMENT':
-            continue
-        elif kind == 'MISMATCH':
-            error_collector.add_error(LexicalError(
-                line_num, 
-                column, 
-                f"Unexpected character '{value}'"
-            ))
-        elif kind == 'STRING' and '\\' in value:
-            # Check for valid escape sequences
-            invalid_escapes = re.findall(r'\\[^"\\nt]', value)
-            if invalid_escapes:
-                error_collector.add_error(LexicalError(
-                    line_num,
-                    column,
-                    f"Invalid escape sequence(s): {''.join(invalid_escapes)}"
-                ))
-        
-        # Check for unclosed strings
-        if kind == 'STRING' and not (value.startswith('"') and value.endswith('"')):
-            error_collector.add_error(LexicalError(
-                line_num,
-                column,
-                "Unclosed string literal"
-            ))
-        
-        # Add valid token to list
-        if kind != 'MISMATCH':
-            tokens.append((kind, value, line_num, column))
-    
-    return tokens, error_collector
+"""
+Code optimization module for VibeScript compiler.
+Contains various optimization techniques to improve generated code.
+"""
 
-# ======= CODE OPTIMIZATION =======
+from error_handler import Warning
+
 
 class CodeOptimizer:
     """Base class for code optimization passes"""
@@ -120,6 +19,7 @@ class CodeOptimizer:
     
     def was_optimized(self):
         return self.optimized
+
 
 class ConstantFolding(CodeOptimizer):
     """Evaluate constant expressions at compile time"""
@@ -155,7 +55,7 @@ class ConstantFolding(CodeOptimizer):
     
     def _evaluate_constant_expression(self, left, right, operator):
         """Calculate result of constant binary operation"""
-        from ast import ASTNode  # Import locally to avoid circular imports
+        from ast_nodes import ASTNode  # Import locally to avoid circular imports
         
         # Extract values based on node types
         left_val = self._get_node_value(left)
@@ -225,6 +125,7 @@ class ConstantFolding(CodeOptimizer):
             return raw.replace('\\"', '"').replace('\\n', '\n').replace('\\t', '\t')
         return None
 
+
 class DeadCodeElimination(CodeOptimizer):
     """Remove unreachable code"""
     
@@ -258,7 +159,7 @@ class DeadCodeElimination(CodeOptimizer):
                     return else_block
                 else:                # False with no else
                     # Return an empty block
-                    from ast import ASTNode  # Import locally
+                    from ast_nodes import ASTNode  # Import locally
                     return ASTNode('Block', children=[])
         
         # Handle while loops with constant false conditions
@@ -268,10 +169,204 @@ class DeadCodeElimination(CodeOptimizer):
             if condition.node_type == 'Boolean' and condition.value is False:
                 self.optimized = True
                 # Return an empty block instead of the loop
-                from ast import ASTNode
+                from ast_nodes import ASTNode
                 return ASTNode('Block', children=[])
         
         return node
+
+
+class StrengthReduction(CodeOptimizer):
+    """Replace expensive operations with cheaper equivalents"""
+    
+    def optimize(self):
+        self.optimized = False
+        self._reduce_strength(self.ast)
+        return self.ast
+    
+    def _reduce_strength(self, node):
+        if node is None:
+            return None
+        
+        # Process children first
+        if hasattr(node, 'children'):
+            for i, child in enumerate(node.children):
+                node.children[i] = self._reduce_strength(child)
+        
+        # Handle multiplication by powers of 2 -> left shift
+        if node.node_type == 'BinaryOp' and node.value == '*':
+            left, right = node.children
+            
+            # Convert x * 2^n to x << n
+            if self._is_power_of_two(right):
+                from ast_nodes import ASTNode
+                power = self._log2(self._get_number_value(right))
+                if power > 0:
+                    self.optimized = True
+                    shift_node = ASTNode('BinaryOp', value='<<')
+                    shift_node.add_child(left)
+                    shift_node.add_child(ASTNode('Number', value=power))
+                    return shift_node
+            
+            # Same for right operand
+            if self._is_power_of_two(left):
+                from ast_nodes import ASTNode
+                power = self._log2(self._get_number_value(left))
+                if power > 0:
+                    self.optimized = True
+                    shift_node = ASTNode('BinaryOp', value='<<')
+                    shift_node.add_child(right)
+                    shift_node.add_child(ASTNode('Number', value=power))
+                    return shift_node
+        
+        # Handle division by powers of 2 -> right shift
+        if node.node_type == 'BinaryOp' and node.value == '/':
+            left, right = node.children
+            
+            # Convert x / 2^n to x >> n
+            if self._is_power_of_two(right):
+                from ast_nodes import ASTNode
+                power = self._log2(self._get_number_value(right))
+                if power > 0:
+                    self.optimized = True
+                    shift_node = ASTNode('BinaryOp', value='>>')
+                    shift_node.add_child(left)
+                    shift_node.add_child(ASTNode('Number', value=power))
+                    return shift_node
+        
+        # Convert x * 1 to x and other algebraic identities
+        if node.node_type == 'BinaryOp':
+            left, right = node.children
+            op = node.value
+            
+            # Multiplicative identities
+            if op == '*':
+                # x * 1 = x
+                if self._is_value(right, 1):
+                    self.optimized = True
+                    return left
+                # 1 * x = x
+                if self._is_value(left, 1):
+                    self.optimized = True
+                    return right
+                # x * 0 = 0 (if no side effects)
+                if self._is_value(right, 0) and self._has_no_side_effects(left):
+                    self.optimized = True
+                    from ast_nodes import ASTNode
+                    return ASTNode('Number', value=0)
+                # 0 * x = 0 (if no side effects)
+                if self._is_value(left, 0) and self._has_no_side_effects(right):
+                    self.optimized = True
+                    from ast_nodes import ASTNode
+                    return ASTNode('Number', value=0)
+            
+            # Additive identities
+            elif op == '+':
+                # x + 0 = x
+                if self._is_value(right, 0):
+                    self.optimized = True
+                    return left
+                # 0 + x = x
+                if self._is_value(left, 0):
+                    self.optimized = True
+                    return right
+            
+            # Subtractive identities
+            elif op == '-':
+                # x - 0 = x
+                if self._is_value(right, 0):
+                    self.optimized = True
+                    return left
+                # x - x = 0 (if no side effects and same variable)
+                if (left.node_type == 'Identifier' and right.node_type == 'Identifier' and
+                    left.value == right.value):
+                    self.optimized = True
+                    from ast_nodes import ASTNode
+                    return ASTNode('Number', value=0)
+            
+            # Division identities
+            elif op == '/':
+                # x / 1 = x
+                if self._is_value(right, 1):
+                    self.optimized = True
+                    return left
+                # 0 / x = 0 (if no side effects and x != 0)
+                if self._is_value(left, 0) and self._has_no_side_effects(right):
+                    self.optimized = True
+                    from ast_nodes import ASTNode
+                    return ASTNode('Number', value=0)
+        
+        return node
+    
+    def _is_power_of_two(self, node):
+        """Check if node is a power of 2"""
+        if node.node_type != 'Number':
+            return False
+        
+        value = self._get_number_value(node)
+        if not isinstance(value, (int, float)):
+            return False
+        
+        # Check if integer and power of 2
+        return value > 0 and (value & (value - 1)) == 0
+    
+    def _log2(self, n):
+        """Calculate log base 2 (position of the highest bit)"""
+        result = 0
+        while n > 1:
+            n >>= 1
+            result += 1
+        return result
+    
+    def _get_number_value(self, node):
+        """Extract numerical value from a number node"""
+        if node.node_type != 'Number':
+            return None
+        
+        value = node.value
+        if isinstance(value, (int, float)):
+            return value
+        
+        try:
+            if isinstance(value, str) and '.' in value:
+                return float(value)
+            else:
+                return int(value)
+        except ValueError:
+            return None
+    
+    def _is_value(self, node, value):
+        """Check if node is a specific numerical value"""
+        if node.node_type != 'Number':
+            return False
+        
+        node_val = self._get_number_value(node)
+        return node_val == value
+    
+    def _has_no_side_effects(self, node):
+        """Check if evaluating a node has no side effects"""
+        if node is None:
+            return True
+        
+        # Simple literals have no side effects
+        if node.node_type in ('Number', 'Boolean', 'String', 'Identifier'):
+            return True
+        
+        # Function calls have potential side effects
+        if node.node_type == 'FunctionCall':
+            return False
+        
+        # Assignments have side effects
+        if node.node_type == 'Assignment':
+            return False
+        
+        # Check children recursively
+        if hasattr(node, 'children'):
+            for child in node.children:
+                if not self._has_no_side_effects(child):
+                    return False
+        
+        return True
+
 
 class UnusedCodeAnalyzer(CodeOptimizer):
     """Identify unused variables and functions"""
@@ -366,6 +461,7 @@ class UnusedCodeAnalyzer(CodeOptimizer):
             for child in node.children:
                 self._collect_usages(child)
 
+
 # Optimizer manager to run all optimization passes
 class OptimizerManager:
     def __init__(self, ast):
@@ -400,123 +496,3 @@ class OptimizerManager:
                 break
         
         return self.ast, self.warnings, total_optimizations
-
-# ======= INTEGRATION WITH COMPILER PIPELINE =======
-
-class CompilerPipeline:
-    def __init__(self, source_code):
-        self.source_code = source_code
-        self.tokens = None
-        self.ast = None
-        self.ir_code = None
-        self.target_code = None
-        self.error_collector = ErrorCollector()
-        self.optimization_stats = {}
-        
-    def run(self):
-        try:
-            # Step 1: Lexical Analysis with error handling
-            tokens, lex_errors = enhanced_tokenize(self.source_code)
-            self.tokens = tokens
-            
-            # Add lexical errors to our collector
-            for error in lex_errors.errors:
-                self.error_collector.add_error(error)
-            
-            if self.error_collector.has_errors():
-                return False, self.error_collector.get_json_output()
-            
-            # Step 2: Parsing
-            from parser import parse_program
-            try:
-                self.ast = parse_program(self.tokens)
-            except Exception as e:
-                # Convert parser exceptions to our error format
-                if hasattr(e, 'line') and hasattr(e, 'column'):
-                    self.error_collector.add_error(SyntaxError(
-                        e.line, e.column, str(e)
-                    ))
-                else:
-                    # Default to first token position if no line info
-                    self.error_collector.add_error(SyntaxError(
-                        self.tokens[0][2] if self.tokens else 1,
-                        self.tokens[0][3] if self.tokens else 0,
-                        str(e)
-                    ))
-                return False, self.error_collector.get_json_output()
-            
-            # Step 3: Semantic Analysis
-            from semanticAnalyzer import SemanticAnalyzer
-            analyzer = SemanticAnalyzer()
-            try:
-                analyzer.analyze(self.ast)
-            except Exception as e:
-                # Convert semantic errors
-                if hasattr(e, 'line') and hasattr(e, 'column'):
-                    self.error_collector.add_error(SemanticError(
-                        e.line, e.column, str(e)
-                    ))
-                else:
-                    self.error_collector.add_error(SemanticError(
-                        1, 0, str(e)
-                    ))
-                return False, self.error_collector.get_json_output()
-            
-            # Step 4: Code Optimization
-            optimizer = OptimizerManager(self.ast)
-            optimizer.add_pass(ConstantFolding)
-            optimizer.add_pass(DeadCodeElimination)
-            optimizer.add_pass(UnusedCodeAnalyzer)
-            
-            self.ast, warnings, opt_count = optimizer.run_optimizations()
-            
-            # Add optimization warnings
-            for warning in warnings:
-                self.error_collector.add_error(warning)
-            
-            self.optimization_stats = {
-                "total_optimizations": opt_count
-            }
-            
-            # Step 5: Intermediate Code Generation
-            from intermediateCodeGenerator import IntermediateCodeGenerator
-            ir_gen = IntermediateCodeGenerator()
-            ir_gen.generate(self.ast)
-            self.ir_code = ir_gen.get_code()
-            
-            # Step 6: Target Code Generation
-            from codeGenerator import CodeGenerator
-            code_gen = CodeGenerator(self.ir_code)
-            code_gen.generate()
-            self.target_code = code_gen.get_assembly()
-            
-            return True, {
-                "target_code": self.target_code,
-                "optimization_stats": self.optimization_stats,
-                "warnings": [w.to_dict() for w in self.error_collector.warnings]
-            }
-            
-        except Exception as e:
-            import traceback
-            error_msg = str(e)
-            tb = traceback.format_exc()
-            logger.error(f"Compilation error: {error_msg}\n{tb}")
-            
-            # Add as generic error if we haven't caught it earlier
-            if not self.error_collector.has_errors():
-                self.error_collector.add_error(CompilerError(
-                    1, 0, f"Internal compiler error: {error_msg}", "INTERNAL", "error"
-                ))
-            
-            return False, self.error_collector.get_json_output()
-
-# Update Flask route to use the enhanced compiler pipeline
-def compile_vibe_enhanced(source):
-    """Enhanced compile function for Flask route"""
-    compiler = CompilerPipeline(source)
-    success, result = compiler.run()
-    
-    return {
-        'success': success,
-        'result': result
-    }
