@@ -1,4 +1,8 @@
+import React, { useState } from 'react';
+
 const Documentation = () => {
+  const [selectedSection, setSelectedSection] = useState('');
+
   const scrollToSection = (id: string) => {
     const container = document.getElementById('right-pane');
     const section = document.getElementById(id);
@@ -11,32 +15,72 @@ const Documentation = () => {
     }
   };
 
+  const handleDropdownChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const id = e.target.value;
+    setSelectedSection(id);
+    scrollToSection(id);
+  };
+
+  const sections = [
+    { id: 'what-is-vibelang', label: 'Introduction' },
+    { id: 'getting-started', label: 'Getting Started' },
+    { id: 'syntax-basics', label: 'Syntax Basics' },
+    { id: 'data-types', label: 'Data Types' },
+    { id: 'variables', label: 'Variables' },
+    { id: 'operators', label: 'Operators' },
+    { id: 'control-flow', label: 'Control Flow' },
+    { id: 'functions', label: 'Functions' },
+    { id: 'input-output', label: 'Input & Output' },
+    { id: 'error-handling', label: 'Error Handling' },
+    { id: 'code-examples', label: 'Code Examples' },
+    { id: 'glossary', label: 'Glossary' },
+    { id: 'faq', label: 'FAQ' },
+  ];
+
   return (
-    <div className="h-screen flex text-white">
-      {/* Left Column (Navigation) */}
-      <div className="w-1/3 p-8 sticky top-0 h-screen">
+    <div className="h-screen flex flex-col md:flex-row text-white">
+      {/* Mobile Dropdown Navigation */}
+      <div className="md:hidden p-4">
+        <h2 className="text-xl font-semibold mb-2">Quick Navigation</h2>
+        <select
+          value={selectedSection}
+          onChange={handleDropdownChange}
+          className="w-full p-2 bg-gray-800 text-white rounded"
+        >
+          <option value="">Select Section</option>
+          {sections.map((section) => (
+            <option key={section.id} value={section.id}>
+              {section.label}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      {/* Desktop Sidebar Navigation */}
+      <div className="hidden md:block w-full md:w-1/3 p-8 sticky top-0 h-auto md:h-screen">
         <h2 className="text-xl font-semibold mb-4">Quick Navigation</h2>
         <ul className="space-y-2 text-sm">
-          <li><a onClick={() => scrollToSection('what-is-vibelang')} className="hover:underline cursor-pointer">Introduction</a></li>
-          <li><a onClick={() => scrollToSection('getting-started')} className="hover:underline cursor-pointer">Getting Started</a></li>
-          <li><a onClick={() => scrollToSection('syntax-basics')} className="hover:underline cursor-pointer">Syntax Basics</a></li>
-          <li><a onClick={() => scrollToSection('data-types')} className="hover:underline cursor-pointer">Data Types</a></li>
-          <li><a onClick={() => scrollToSection('variables')} className="hover:underline cursor-pointer">Variables</a></li>
-          <li><a onClick={() => scrollToSection('operators')} className="hover:underline cursor-pointer">Operators</a></li>
-          <li><a onClick={() => scrollToSection('control-flow')} className="hover:underline cursor-pointer">Control Flow</a></li>
-          <li><a onClick={() => scrollToSection('functions')} className="hover:underline cursor-pointer">Functions</a></li>
-          <li><a onClick={() => scrollToSection('input-output')} className="hover:underline cursor-pointer">Input & Output</a></li>
-          <li><a onClick={() => scrollToSection('error-handling')} className="hover:underline cursor-pointer">Error Handling</a></li>
-          <li><a onClick={() => scrollToSection('code-examples')} className="hover:underline cursor-pointer">Code Examples</a></li>
-          <li><a onClick={() => scrollToSection('glossary')} className="hover:underline cursor-pointer">Glossary</a></li>
-          <li><a onClick={() => scrollToSection('faq')} className="hover:underline cursor-pointer">FAQ</a></li>
+          {sections.map((section) => (
+            <li key={section.id}>
+              <a
+                onClick={() => scrollToSection(section.id)}
+                className="hover:underline cursor-pointer"
+              >
+                {section.label}
+              </a>
+            </li>
+          ))}
         </ul>
       </div>
 
-      {/* Right Column (Content) */}
-      <div id="right-pane" className="w-2/3 overflow-y-scroll no-scrollbar px-8 py-12 scroll-smooth">
+      {/* Right Pane Content */}
+      <div
+        id="right-pane"
+        className="w-full md:w-2/3 overflow-y-scroll no-scrollbar px-4 md:px-8 py-8 md:py-12 scroll-smooth"
+      >
         <h1 className="text-4xl font-bold mb-6">VibeLang Documentation</h1>
 
+        {/* Sections */}
         <section id="what-is-vibelang" className="mb-8">
           <h2 className="text-2xl font-semibold mb-2">🚀 What is VibeLang?</h2>
           <p>VibeLang is a fun, expressive programming language that turns Gen Z slang into code.</p>

@@ -1,34 +1,28 @@
-import React from 'react';
-
 const Developers = () => {
-  // Developer data
+
   const developers = [
     {
       name: "Goddess Valdehuesa",
-      title: "UCLM-BSCS 3A",
-      role: "CEO & Co-Founder",
-      description: "Leads product vision and sustainability strategy; bridges tech with climate impact.",
+      role: "UCLM-BSCS 3A",
+      description: "Led frontend development, UI design, and language syntax creation for Vibe.",
       imageUrl: "/GP.svg"
     },
     {
       name: "Johana Taboada",
-      title: "UCLM-BSCS 3A",
-      role: "CTO & Co-Founder",
-      description: "Oversees AI and backend development; builds scalable, automated systems.",
+      role: "UCLM-BSCS 3A",
+      description: "Managed security and database systems for the project.",
       imageUrl: "/JT.svg"
     },
     {
       name: "Denise Aliah Cabiso",
-      title: "UCLM-BSCS 3A",
-      role: "CPO & Co-Founder",
-      description: "Leads UI/UX and frontend; designs seamless, user-driven experiencesss.",
+      role: "UCLM-BSCS 3A",
+      description: "Worked on Vibe’s frontend interface for seamless user experience.",
       imageUrl: "/DA.svg"
     },
     {
       name: "Shania Jaynn Anino",
-      title: "UCLM-BSCS 3A",
-      role: "CSO & Co-Founder",
-      description: "Focuses on security infrastructure and compliance; ensures data protection.",
+      role: "UCLM-BSCS 3A",
+      description: "Led compiler integration and backend execution flow.",
       imageUrl: null
     }
   ];
@@ -39,7 +33,7 @@ const Developers = () => {
         {/* Header */}
         <div className="text-center mb-12">
           <div className="flex items-center justify-center mb-7"> </div>
-          <h2 className="text-navy-900 text-5xl md:text-6xl font-bold">
+          <h2 className="text-navy-900 text-4xl md:text-5xl font-bold">
             The Team Building<br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#BF2ECE] to-[#881CE5]">VIBE</span> Compiler
           </h2>
@@ -70,9 +64,8 @@ const Developers = () => {
               <div className="p-6 bg-white/10">
                 <div className="text-center mb-4">
                   <h3 className="text-navy-900 font-bold text-xl">{developer.name}</h3>
-                  <p className="text-gray text-sm">{developer.title}</p>
                   
-                  <div className="inline-block bg-blue-50 text-cyan-500 rounded-full px-4 py-1 mt-2 text-sm font-medium">
+                  <div className="inline-block bg-blue-50 text-[#881CE5] rounded-full px-4 py-1 mt-2 text-sm font-medium">
                     {developer.role}
                   </div>
                 </div>
