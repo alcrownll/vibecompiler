@@ -30,14 +30,14 @@ const Output: React.FC<OutputProps> = ({ output }) => {
                 width: 100%;
             }
             .xterm-viewport {
-                background-color: #1e1e1e !important;
+                background-color: #000000 !important;
             }
         `;
         document.head.appendChild(style);
 
         const terminal = new Terminal({
             theme: {
-                background: '#1e1e1e',
+                background: '#000000',
                 foreground: '#ffffff',
             },
             fontSize: 14,
@@ -119,7 +119,7 @@ const Output: React.FC<OutputProps> = ({ output }) => {
     return (
         <div
             ref={containerRef}
-            className="w-full h-full flex flex-col bg-gray-900 rounded-md overflow-hidden"
+            className="w-full h-full flex flex-col bg-black rounded-md overflow-hidden"
             style={{ position: 'relative', padding: '4px' }}
         >
             <div

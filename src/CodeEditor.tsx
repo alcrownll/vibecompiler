@@ -209,8 +209,8 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
         // Register language
         monaco.languages.register({ id: 'vibe' });
 
-        // Define token styles
-        monaco.editor.defineTheme('vibe-dark', {
+        // Define token styles with custom theme
+        monaco.editor.defineTheme('vibe-purple', {
             base: 'vs-dark',
             inherit: true,
             rules: [
@@ -224,7 +224,14 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
                 { token: 'identifier', foreground: '9CDCFE' },
                 { token: 'datatype', foreground: '4EC9B0', fontStyle: 'italic' },
             ],
-            colors: {}
+            colors: {
+                'editor.background': '#0f0a27', // Custom purple background
+                'editor.lineHighlightBackground': '#1b1243', // Slightly lighter for line highlight
+                'editorCursor.foreground': '#d4d4d4',
+                'editor.selectionBackground': '#264f78',
+                'editor.inactiveSelectionBackground': '#3a3d41',
+                'editorIndentGuide.background': '#404040',
+            }
         });
 
         // Set syntax highlighting rules - updated with correct syntax
@@ -429,7 +436,6 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
                 return null;
             }
         });
-
     };
 
     // Handle editor mounting
@@ -441,7 +447,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
         defineVibeLanguage(monaco);
 
         // Apply the custom theme
-        monaco.editor.setTheme('vibe-dark');
+        monaco.editor.setTheme('vibe-purple');
 
         // Create a new model with the vibe language
         const model = monaco.editor.createModel(
@@ -526,6 +532,7 @@ starterPack {
         <div className="w-full h-full flex flex-col border border-gray-700 rounded-md overflow-hidden">
             <Editor
                 height="100%"
+                theme
                 defaultValue={defaultValue || sampleCode}
                 options={editorOptions}
                 onMount={handleEditorDidMount}
