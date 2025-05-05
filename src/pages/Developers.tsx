@@ -27,7 +27,7 @@ const Developers = () => {
       title: "UCLM-BSCS 3A",
       role: "CSO & Co-Founder",
       description: "Focuses on security infrastructure and compliance; ensures data protection.",
-      imageUrl: null
+      imageUrl: "/SJ.svg"
     }
   ];
 
