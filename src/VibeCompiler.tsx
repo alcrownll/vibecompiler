@@ -3,6 +3,7 @@ import TopNavigation from './TopNavigation';
 import Home from './pages/Home';
 import Documentation from './pages/Documentation';
 import Playground from './pages/Playground';
+import Developers from './pages/Developers';
 
 const VibeCompiler = () => {
   return (
@@ -19,6 +20,7 @@ const VibeCompiler = () => {
           <Route path="home" element={<Home />} />
           <Route path="docs" element={<Documentation />} />
           <Route path="playground" element={<Playground />} />
+          <Route path="developers" element={<Developers />} />
         </Routes>
       </div>
     </div>
