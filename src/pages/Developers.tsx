@@ -23,7 +23,7 @@ const Developers = () => {
       name: "Shania Jaynn Anino",
       role: "UCLM-BSCS 3A",
       description: "Led compiler integration and backend execution flow.",
-      imageUrl: null
+      imageUrl: "/SJ.svg"
     }
   ];
 
