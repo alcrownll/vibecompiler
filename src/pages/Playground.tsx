@@ -35,12 +35,14 @@ const Playground = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [hasRun, setHasRun] = useState(false);
 
+  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
+
   const runCode = async () => {
     setIsLoading(true);
     setOutput('');
     setHasRun(true);
     try {
-      const response = await fetch('http://localhost:8000/compile', {
+      const response = await fetch(`${API_URL}/compile`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ source_code: editorCode })
