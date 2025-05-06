@@ -187,14 +187,18 @@ class SemanticAnalyzer:
         elif node.type == 'BINARY_OP':
             left_type = self.get_expression_type(node.children[0])
             right_type = self.get_expression_type(node.children[1])
-            
+            # Handle comparison operators
+            if node.value in ['>', '<', '>=', '<=', '==', '!=']:
+                if left_type in ['INTEGER_TYPE', 'FLOAT_TYPE'] and right_type in ['INTEGER_TYPE', 'FLOAT_TYPE']:
+                    return 'BOOLEAN_TYPE'
+                else:
+                    raise SemanticError(f"Type mismatch in comparison: {left_type} {node.value} {right_type}", node)
             if left_type == right_type:
                 return left_type
             elif left_type in ['INTEGER_TYPE', 'FLOAT_TYPE'] and right_type in ['INTEGER_TYPE', 'FLOAT_TYPE']:
                 return 'FLOAT_TYPE'  # Promote to float if mixing int and float
             else:
                 raise SemanticError(f"Type mismatch in binary operation: {left_type} {node.value} {right_type}", node)
-        
         return 'UNKNOWN'
 
     def is_type_compatible(self, type1: str, type2: str) -> bool:
