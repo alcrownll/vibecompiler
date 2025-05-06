@@ -33,12 +33,18 @@ class VibeVM:
                 val = self.eval_arg(instr.arg1)
                 self.output.append(str(val))
             elif instr.op == 'GOTO':
-                self.ip = self.labels.get(instr.arg1, self.ip)
+                if instr.arg1 in self.labels:
+                    self.ip = self.labels[instr.arg1]
+                else:
+                    raise RuntimeError(f'Label {instr.arg1} not found')
                 continue
             elif instr.op == 'IF_FALSE':
                 cond = self.eval_arg(instr.arg1)
                 if not cond:
-                    self.ip = self.labels.get(instr.arg2, self.ip)
+                    if instr.arg2 in self.labels:
+                        self.ip = self.labels[instr.arg2]
+                    else:
+                        raise RuntimeError(f'Label {instr.arg2} not found')
                     continue
             # Ignore LABEL and others for now
             self.ip += 1
