@@ -92,8 +92,12 @@ class SemanticAnalyzer:
         # Add parameters to the symbol table
         self.enter_scope()
         for param in params_node.children:
-            func_symbol.parameters.append(param.value)
-            self.declare_symbol(param.value, 'UNKNOWN')  # Parameter types are unknown until used
+            param_name = param.value
+            param_type = 'UNKNOWN'
+            if param.children and param.children[0].type == 'TYPE':
+                param_type = param.children[0].value
+            func_symbol.parameters.append((param_name, param_type))
+            self.declare_symbol(param_name, param_type)
         
         # Analyze function body
         for statement in body_node.children:

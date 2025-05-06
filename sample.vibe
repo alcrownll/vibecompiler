@@ -1,0 +1,49 @@
+starterPack vibeSample {
+    // Variable declarations
+    clout x = 10;
+    ratio y = 3.14;
+    tea message = "Vibe check!";
+    mood isVibing = noCap;
+    
+    // Function declaration
+    serve addNumbers(clout a, clout b) {
+        shoutout("Adding numbers:", a, "and", b);
+        return a + b;
+    }
+    
+    // If-else statement
+    smash (x > 5) {
+        shoutout("x is greater than 5");
+    } maybe (x == 5) {
+        shoutout("x is exactly 5");
+    } pass {
+        shoutout("x is less than 5");
+    }
+    
+    // While loop
+    grind (x > 0) {
+        shoutout("Countdown:", x);
+        x = x - 1;
+    }
+    
+    // For loop
+    yeet (clout i = 0; i < 5; i = i + 1) {
+        shoutout("Loop iteration:", i);
+    }
+    
+    // Array example
+    gang numbers = [1, 2, 3, 4, 5];
+    shoutout("Array contents:", numbers);
+    
+    // Function call
+    clout sum = addNumbers(5, 7);
+    shoutout("Sum of 5 and 7 is:", sum);
+    
+    // Boolean operations
+    mood isEven = (sum % 2 == 0);
+    smash (isEven) {
+        shoutout("The sum is even!");
+    } pass {
+        shoutout("The sum is odd!");
+    }
+} 

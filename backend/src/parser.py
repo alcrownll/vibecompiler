@@ -143,11 +143,29 @@ class Parser:
     def for_statement(self) -> ASTNode:
         self.expect('FOR')
         self.expect('LPAREN')
-        init = self.variable_declaration() if self.current_token.type in ['INTEGER_TYPE', 'FLOAT_TYPE', 'STRING_TYPE', 'BOOLEAN_TYPE'] else self.expression_statement()
-        condition = self.expression()
+        # Allow empty, variable declaration, or expression/assignment for init
         if self.current_token and self.current_token.type == 'SEMICOLON':
-            self.advance()
-        update = self.expression()
+            init = None
+            self.expect('SEMICOLON')
+        elif self.current_token and self.current_token.type in ['INTEGER_TYPE', 'FLOAT_TYPE', 'STRING_TYPE', 'BOOLEAN_TYPE', 'ARRAY_TYPE', 'DICT_TYPE']:
+            init = self.variable_declaration()
+            # variable_declaration already consumes the semicolon if present
+        else:
+            init = self.expression_statement()
+            if self.current_token and self.current_token.type == 'SEMICOLON':
+                self.advance()
+        # Condition (can be empty)
+        if self.current_token and self.current_token.type == 'SEMICOLON':
+            condition = None
+            self.expect('SEMICOLON')
+        else:
+            condition = self.expression()
+            self.expect('SEMICOLON')
+        # Update (can be empty)
+        if self.current_token and self.current_token.type == 'RPAREN':
+            update = None
+        else:
+            update = self.expression()
         self.expect('RPAREN')
         self.expect('LBRACE')
         
@@ -165,10 +183,21 @@ class Parser:
         
         params = []
         if self.current_token and self.current_token.type != 'RPAREN':
-            params.append(self.expect('IDENTIFIER'))
+            # Parse type and name
+            param_type = None
+            if self.current_token.type in ['INTEGER_TYPE', 'FLOAT_TYPE', 'STRING_TYPE', 'BOOLEAN_TYPE', 'ARRAY_TYPE', 'DICT_TYPE']:
+                param_type = self.current_token.type
+                self.advance()
+            param_name = self.expect('IDENTIFIER')
+            params.append(ASTNode('PARAM', param_name.value, [ASTNode('TYPE', param_type)] if param_type else []))
             while self.current_token and self.current_token.type == 'COMMA':
                 self.expect('COMMA')
-                params.append(self.expect('IDENTIFIER'))
+                param_type = None
+                if self.current_token.type in ['INTEGER_TYPE', 'FLOAT_TYPE', 'STRING_TYPE', 'BOOLEAN_TYPE', 'ARRAY_TYPE', 'DICT_TYPE']:
+                    param_type = self.current_token.type
+                    self.advance()
+                param_name = self.expect('IDENTIFIER')
+                params.append(ASTNode('PARAM', param_name.value, [ASTNode('TYPE', param_type)] if param_type else []))
         
         self.expect('RPAREN')
         self.expect('LBRACE')
@@ -178,7 +207,7 @@ class Parser:
             body.append(self.statement())
         self.expect('RBRACE')
         
-        return ASTNode('FUNCTION', name.value, [ASTNode('PARAMS', children=[ASTNode('PARAM', p.value) for p in params]), ASTNode('BODY', children=body)])
+        return ASTNode('FUNCTION', name.value, [ASTNode('PARAMS', children=params), ASTNode('BODY', children=body)])
 
     def variable_declaration(self) -> ASTNode:
         var_type = self.current_token.type
@@ -202,6 +231,21 @@ class Parser:
         return expr
 
     def expression(self) -> ASTNode:
+        return self.assignment_expression()
+
+    def assignment_expression(self) -> ASTNode:
+        # Check for assignment: IDENTIFIER = expression
+        if self.current_token and self.current_token.type == 'IDENTIFIER':
+            identifier_token = self.current_token
+            self.advance()
+            if self.current_token and self.current_token.type == 'OP' and self.current_token.value == '=':
+                self.expect('OP')
+                value = self.expression()
+                return ASTNode('ASSIGN', identifier_token.value, [value])
+            else:
+                # Not an assignment, treat as identifier
+                self.token_index -= 1
+                self.current_token = identifier_token
         return self.binary_expression()
 
     def binary_expression(self) -> ASTNode:

@@ -87,7 +87,11 @@ class IntermediateCodeGenerator:
         
         # Process parameters
         for param in params:
-            self.symbol_table[param.value] = 'PARAM'
+            param_name = param.value
+            param_type = 'PARAM'
+            if param.children and param.children[0].type == 'TYPE':
+                param_type = param.children[0].value
+            self.symbol_table[param_name] = param_type
         
         # Process function body
         for statement in body.children:
@@ -230,6 +234,11 @@ class IntermediateCodeGenerator:
         # Return a string representation of the array for now
         elements = [self.visit(child) for child in node.children]
         return '[' + ','.join(elements) + ']'
+
+    def visit_ASSIGN(self, node: ASTNode):
+        var_name = node.value
+        value = self.visit(node.children[0])
+        self.code.append(ThreeAddressCode('=', value, None, var_name))
 
     def optimize(self):
         # Simple constant folding optimization
