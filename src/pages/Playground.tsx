@@ -35,7 +35,9 @@ const Playground = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [hasRun, setHasRun] = useState(false);
 
-  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
+  const API_URL = window.location.hostname === "localhost"
+    ? "http://localhost:8000"
+    : "https://vibe-compiler-backend.onrender.com";
 
   const runCode = async () => {
     setIsLoading(true);
