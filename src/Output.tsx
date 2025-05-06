@@ -70,9 +70,9 @@ const Output: React.FC<OutputProps> = ({ output, hasRun }) => {
         terminalInstance.clear();
 
         if (output) {
-            terminalInstance.write(output);
+            terminalInstance.write(output.endsWith('\n') ? output : output + '\n');
         } else if (!hasRun) {
-            terminalInstance.write('Click "Run" to see the output here');
+            terminalInstance.write('Click "Run" to see the output here\n');
         }
     }, [output, terminalInstance, hasRun]);
 

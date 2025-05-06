@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { Editor, OnMount } from '@monaco-editor/react';
 
 type CodeEditorProps = {
@@ -17,7 +17,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
     const monacoRef = useRef<any>(null);
 
     // Define editor options
-    const editorOptions = {
+    const editorOptions: any = {
         automaticLayout: true,
         tabSize: 4,
         detectIndentation: false,
@@ -38,28 +38,6 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
         tabCompletion: "on",
         snippetSuggestions: "inline"
     };
-
-    // Sample code to verify highlighting works - updated with correct syntax
-    const sampleCode = `~ This is a sample vibe code
-starterPack {
-    shoutout("Hello Vibe World!")
-    
-    ~ Data type examples
-    clout myInteger = 42
-    ratio myFloat = 3.14
-    tea myString = "This is a string"
-    mood myBoolean = noCap
-    gang myArray = [1, 2, 3, 4, 5]
-    
-    ~ Conditional example
-    smash(myBoolean) {
-        shoutout("This is true!")
-    } maybe(myInteger > 50) {
-        shoutout("Integer is greater than 50")
-    } pass {
-        shoutout("This is the else block")
-    }
-}`;
 
     // Language metadata for autocompletion - updated with correct syntax from the table
     const vibeKeywords = [
@@ -339,7 +317,7 @@ starterPack {
 
         // Create a new model with the vibe language
         const model = monaco.editor.createModel(
-            value || sampleCode,
+            value,
             'vibe',
             monaco.Uri.parse('file:///main.vibe')
         );
@@ -366,7 +344,7 @@ starterPack {
             <Editor
                 height="100%"
                 theme="vibe-purple"
-                defaultValue={value || sampleCode}
+                value={value}
                 options={editorOptions}
                 onMount={handleEditorDidMount}
             />

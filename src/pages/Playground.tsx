@@ -8,8 +8,29 @@ interface CompileError {
   message: string;
 }
 
+const sampleCode = `~ This is a sample vibe code
+starterPack myProgram {
+    shoutout("Hello Vibe World!")
+
+    ~ Data type examples
+    clout myInteger = 42
+    ratio myFloat = 3.14
+    tea myString = "This is a string"
+    mood myBoolean = noCap
+    gang myArray = [1, 2, 3, 4, 5]
+
+    ~ Conditional example
+    smash(myBoolean) {
+        shoutout("This is true!")
+    } maybe(myInteger > 50) {
+        shoutout("Integer is greater than 50")
+    } pass {
+        shoutout("This is the else block")
+    }
+}`;
+
 const Playground = () => {
-  const [editorCode, setEditorCode] = useState('');
+  const [editorCode, setEditorCode] = useState(sampleCode);
   const [outputText, setOutput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [hasRun, setHasRun] = useState(false);
@@ -19,22 +40,22 @@ const Playground = () => {
     setOutput('');
     setHasRun(true);
     try {
-      const response = await fetch('http://localhost:5000/compile', {
+      const response = await fetch('http://localhost:8000/compile', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ code: editorCode })
+        body: JSON.stringify({ source_code: editorCode })
       });
 
       const result = await response.json();
 
-      if (result.success) {
-        setOutput(result.output);
+      if (result.program_output) {
+        setOutput(result.program_output);
+      } else if (result.error) {
+        setOutput(`Compilation Failed:\n${result.error}`);
+      } else if (result.assembly_code) {
+        setOutput(result.assembly_code.join('\n'));
       } else {
-        const errorMessages = result.errors?.map((err: CompileError) =>
-          `Line ${err.line}, Col ${err.column}: ${err.message}`
-        ).join('\n') || 'Unknown error occurred';
-
-        setOutput(`Compilation Failed:\n${errorMessages}`);
+        setOutput('Unknown error occurred');
       }
     } catch (error: any) {
       setOutput(`Network Error: ${error.message}`);
