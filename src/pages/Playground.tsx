@@ -55,7 +55,7 @@ const Playground = () => {
       if (result.program_output) {
         setOutput(result.program_output);
       } else if (result.error) {
-        setOutput(`Compilation Failed:\n${result.error}`);
+        setOutput(result.error);
       } else if (result.assembly_code) {
         setOutput(result.assembly_code.join('\n'));
       } else {

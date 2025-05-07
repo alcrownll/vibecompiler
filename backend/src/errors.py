@@ -1,10 +1,9 @@
-from typing import Optional, List, Tuple
-from .parser import ASTNode
+from typing import Optional, List, Tuple, Any
 
 class CompilerError(Exception):
     """Base class for all compiler errors"""
     def __init__(self, message: str, line: Optional[int] = None, column: Optional[int] = None, 
-                 node: Optional[ASTNode] = None, code_snippet: Optional[str] = None):
+                 node: Any = None, code_snippet: Optional[str] = None):
         super().__init__(message)
         self.message = message
         self.line = line
@@ -20,21 +19,21 @@ class CompilerError(Exception):
 class LexicalError(CompilerError):
     """Errors during lexical analysis - 'not vibing' token errors"""
     def __init__(self, message: str, line: Optional[int] = None, column: Optional[int] = None, 
-                 node: Optional[ASTNode] = None, code_snippet: Optional[str] = None):
+                 node: Any = None, code_snippet: Optional[str] = None):
         vibe_message = f"main character syndrome: {message}"
         super().__init__(vibe_message, line, column, node, code_snippet)
 
 class SyntaxError(CompilerError):
     """Errors during syntax analysis - 'not vibing' structure errors"""
     def __init__(self, message: str, line: Optional[int] = None, column: Optional[int] = None, 
-                 node: Optional[ASTNode] = None, code_snippet: Optional[str] = None):
+                 node: Any = None, code_snippet: Optional[str] = None):
         vibe_message = f"not vibing: {message}"
         super().__init__(vibe_message, line, column, node, code_snippet)
 
 class SemanticError(CompilerError):
     """Errors during semantic analysis - 'sus behavior' warnings"""
     def __init__(self, message: str, line: Optional[int] = None, column: Optional[int] = None, 
-                 node: Optional[ASTNode] = None, code_snippet: Optional[str] = None):
+                 node: Any = None, code_snippet: Optional[str] = None):
         vibe_message = f"sus behavior: {message}"
         super().__init__(vibe_message, line, column, node, code_snippet)
 
@@ -42,55 +41,55 @@ class TypeError(SemanticError):
     """Type-related semantic errors"""
     def __init__(self, message: str, expected_type: str, actual_type: str, 
                  line: Optional[int] = None, column: Optional[int] = None, 
-                 node: Optional[ASTNode] = None, code_snippet: Optional[str] = None):
+                 node: Any = None, code_snippet: Optional[str] = None):
         vibe_message = f"lowkey caught in 4K: expected {expected_type}, got {actual_type}. {message}"
         super().__init__(vibe_message, line, column, node, code_snippet)
 
 class NameError(SemanticError):
     """Variable/function name related errors"""
     def __init__(self, name: str, line: Optional[int] = None, column: Optional[int] = None, 
-                 node: Optional[ASTNode] = None, code_snippet: Optional[str] = None):
+                 node: Any = None, code_snippet: Optional[str] = None):
         vibe_message = f"ghosted reference: '{name}' isn't in the vibe"
         super().__init__(vibe_message, line, column, node, code_snippet)
 
 class ScopeError(SemanticError):
     """Scope-related semantic errors"""
     def __init__(self, message: str, line: Optional[int] = None, column: Optional[int] = None, 
-                 node: Optional[ASTNode] = None, code_snippet: Optional[str] = None):
+                 node: Any = None, code_snippet: Optional[str] = None):
         vibe_message = f"out of pocket: {message}"
         super().__init__(vibe_message, line, column, node, code_snippet)
 
 class CodeGenerationError(CompilerError):
     """Errors during code generation"""
     def __init__(self, message: str, line: Optional[int] = None, column: Optional[int] = None, 
-                 node: Optional[ASTNode] = None, code_snippet: Optional[str] = None):
+                 node: Any = None, code_snippet: Optional[str] = None):
         vibe_message = f"big yikes: {message}"
         super().__init__(vibe_message, line, column, node, code_snippet)
 
 class OptimizationError(CompilerError):
     """Errors during code optimization"""
     def __init__(self, message: str, line: Optional[int] = None, column: Optional[int] = None, 
-                 node: Optional[ASTNode] = None, code_snippet: Optional[str] = None):
+                 node: Any = None, code_snippet: Optional[str] = None):
         vibe_message = f"mid behavior: {message}"
         super().__init__(vibe_message, line, column, node, code_snippet)
 
 class RuntimeError(CompilerError):
     """Errors during program execution"""
     def __init__(self, message: str, line: Optional[int] = None, column: Optional[int] = None, 
-                 node: Optional[ASTNode] = None, code_snippet: Optional[str] = None):
+                 node: Any = None, code_snippet: Optional[str] = None):
         vibe_message = f"dead fr: {message}"
         super().__init__(vibe_message, line, column, node, code_snippet)
 
 class DivisionByZeroError(RuntimeError):
     """Division by zero runtime error"""
     def __init__(self, line: Optional[int] = None, column: Optional[int] = None, 
-                 node: Optional[ASTNode] = None, code_snippet: Optional[str] = None):
+                 node: Any = None, code_snippet: Optional[str] = None):
         super().__init__("dividing by zero? that's cap fr fr", line, column, node, code_snippet)
 
 class IndexError(RuntimeError):
     """Array index out of bounds error"""
     def __init__(self, index: int, array_size: int, line: Optional[int] = None, 
-                 column: Optional[int] = None, node: Optional[ASTNode] = None, 
+                 column: Optional[int] = None, node: Any = None, 
                  code_snippet: Optional[str] = None):
         super().__init__(f"gang member {index} got ghosted (gang size is {array_size})", 
                         line, column, node, code_snippet)
@@ -98,7 +97,7 @@ class IndexError(RuntimeError):
 class IOError(RuntimeError):
     """Input/output related errors"""
     def __init__(self, message: str, line: Optional[int] = None, column: Optional[int] = None, 
-                 node: Optional[ASTNode] = None, code_snippet: Optional[str] = None):
+                 node: Any = None, code_snippet: Optional[str] = None):
         super().__init__(f"tea spilled: {message}", line, column, node, code_snippet)
 
 def format_error(error: CompilerError) -> str:

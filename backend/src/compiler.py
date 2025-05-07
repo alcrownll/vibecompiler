@@ -5,6 +5,7 @@ from .semantic_analyzer import SemanticAnalyzer
 from .intermediate_code import IntermediateCodeGenerator
 from .code_generator import AssemblyGenerator
 from .vm import VibeVM
+from .errors import CompilerError, format_error
 
 class Compiler:
     def __init__(self):
@@ -40,7 +41,8 @@ class Compiler:
             return assembly_code
             
         except Exception as e:
-            # Error handling
+            if isinstance(e, CompilerError):
+                raise e
             error_message = str(e)
             if hasattr(e, 'node') and e.node:
                 error_message += f" at line {e.node.line}, column {e.node.column}"
@@ -78,13 +80,12 @@ class Compiler:
                 'program_output': program_output
             }
         except Exception as e:
+            if isinstance(e, CompilerError):
+                raise e
             error_message = str(e)
             if hasattr(e, 'node') and e.node:
                 error_message += f" at line {e.node.line}, column {e.node.column}"
             raise CompilerError(error_message)
-
-class CompilerError(Exception):
-    pass
 
 def compile_source(source_code: str) -> List[str]:
     compiler = Compiler()

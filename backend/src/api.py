@@ -1,6 +1,7 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from .compiler import compile_and_run_source, CompilerError
+from .errors import format_error
 from fastapi.middleware.cors import CORSMiddleware
 import os
 
@@ -32,7 +33,8 @@ async def compile_code(request: CompileRequest):
         result = compile_and_run_source(request.source_code)
         return CompileResponse(assembly_code=result['assembly_code'], program_output=result['program_output'])
     except CompilerError as e:
-        return CompileResponse(assembly_code=[], program_output="", error=str(e))
+        formatted_error = format_error(e)
+        return CompileResponse(assembly_code=[], program_output="", error=formatted_error)
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Internal server error: {str(e)}")
 
