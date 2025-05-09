@@ -1,5 +1,9 @@
 import re
-from typing import List, Tuple, Optional
+from typing import List, Tuple, Optional, Any, TYPE_CHECKING
+from .errors import SyntaxError as VibeSyntaxError
+
+if TYPE_CHECKING:
+    from .lexer import Token
 
 class Token:
     def __init__(self, type: str, value: str, line: int, column: int):
@@ -98,7 +102,7 @@ class Lexer:
             elif kind == 'BLOCK_COMMENT':
                 continue
             elif kind == 'MISMATCH':
-                raise SyntaxError(f'Unexpected character {value} at line {line_num}, column {column}')
+                raise VibeSyntaxError(f'Unexpected character {value}', line_num, column)
             
             tokens.append(Token(kind, value, line_num, column))
             

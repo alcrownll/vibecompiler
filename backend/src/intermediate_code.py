@@ -230,15 +230,15 @@ class IntermediateCodeGenerator:
         value = self.visit(node.children[0])
         self.code.append(ThreeAddressCode('PRINT', value))
 
-    def visit_ARRAY_LITERAL(self, node: ASTNode) -> str:
-        # Return a string representation of the array for now
-        elements = [self.visit(child) for child in node.children]
-        return '[' + ','.join(elements) + ']'
-
     def visit_ASSIGN(self, node: ASTNode):
         var_name = node.value
         value = self.visit(node.children[0])
         self.code.append(ThreeAddressCode('=', value, None, var_name))
+        
+    def visit_ARRAY_LITERAL(self, node: ASTNode) -> str:
+        # Return a string representation of the array for now
+        elements = [self.visit(child) for child in node.children]
+        return '[' + ','.join(elements) + ']'
 
     def optimize(self):
         # Simple constant folding optimization

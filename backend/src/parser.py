@@ -1,5 +1,6 @@
 from typing import List, Optional, Dict, Any
 from .lexer import Token, Lexer
+from .errors import SyntaxError as VibeSyntaxError
 
 class ASTNode:
     def __init__(self, type: str, value: Optional[str] = None, children: Optional[List['ASTNode']] = None):
@@ -33,12 +34,19 @@ class Parser:
         else:
             self.current_token = None
 
-    def expect(self, token_type: str) -> Token:
+    def expect(self, token_type: str) -> 'Token':
         if self.current_token and self.current_token.type == token_type:
             token = self.current_token
             self.advance()
             return token
-        raise SyntaxError(f"Expected {token_type}, got {self.current_token.type if self.current_token else 'EOF'}")
+        if self.current_token:
+            raise VibeSyntaxError(
+                f"Expected '{token_type.lower()}' but found '{self.current_token.value}'",
+                self.current_token.line,
+                self.current_token.column
+            )
+        else:
+            raise VibeSyntaxError(f"Expected '{token_type.lower()}' but found EOF", None, None)
 
     def program(self) -> ASTNode:
         # PROGRAM -> 'starterPack' IDENTIFIER '{' statements '}'
@@ -55,7 +63,7 @@ class Parser:
 
     def statement(self) -> ASTNode:
         if not self.current_token:
-            raise SyntaxError("Unexpected end of input")
+            raise VibeSyntaxError("Unexpected end of input", None, None)
             
         token_type = self.current_token.type
         
@@ -261,7 +269,7 @@ class Parser:
 
     def primary_expression(self) -> ASTNode:
         if not self.current_token:
-            raise SyntaxError("Unexpected end of input")
+            raise VibeSyntaxError("Unexpected end of input", None, None)
             
         if self.current_token.type in ['NUMBER', 'STRING', 'TRUE', 'FALSE', 'NULL']:
             token = self.current_token
@@ -279,7 +287,7 @@ class Parser:
         elif self.current_token.type == 'LBRACKET':
             return self.parse_array_literal()
         else:
-            raise SyntaxError(f"Unexpected token: {self.current_token.type}")
+            raise VibeSyntaxError(f"Unexpected token: {self.current_token.type}", self.current_token.line, self.current_token.column)
 
     def parse_array_literal(self) -> ASTNode:
         self.expect('LBRACKET')

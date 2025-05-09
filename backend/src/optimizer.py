@@ -97,3 +97,6 @@ class Optimizer:
                 new_code.append(instr)
         
         return new_code, changed 
+    
+    
+    
