@@ -46,7 +46,7 @@ const Developers = () => {
               key={index} 
               className="rounded-2xl overflow-hidden shadow-md transform transition duration-300 hover:scale-105 hover:shadow-xl"
             >
-              {/* Display SVG image or placeholder with zoom effect */}
+              {/* Display */}
               <div className="h-60 bg-black/10 overflow-hidden">
                 {developer.imageUrl ? (
                   <div className="h-full w-full overflow-hidden">

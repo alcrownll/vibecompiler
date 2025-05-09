@@ -3,20 +3,19 @@ import { Editor, OnMount } from '@monaco-editor/react';
 
 type CodeEditorProps = {
     language?: string;
-    value?: string; // Changed from defaultValue to value for controlled component
-    onChange?: (value: string) => void; // Removed undefined from return type
+    value?: string; 
+    onChange?: (value: string) => void; 
 };
 
 const CodeEditor: React.FC<CodeEditorProps> = ({
     language = 'vibe',
-    value = '', // Changed from defaultValue to value
+    value = '', 
     onChange
 }) => {
-    // Use 'any' type for monaco editor instance to avoid direct import
     const editorRef = useRef<any>(null);
     const monacoRef = useRef<any>(null);
 
-    // Define editor options
+    //editor options
     const editorOptions: any = {
         automaticLayout: true,
         tabSize: 4,
@@ -39,7 +38,6 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
         snippetSuggestions: "inline"
     };
 
-    // Language metadata for autocompletion - updated with correct syntax from the table
     const vibeKeywords = [
         { label: 'starterPack', kind: 'keyword', detail: 'Initialize a new Vibe pack', insertText: 'starterPack {\n\t$0\n}', insertTextRules: 4 },
         { label: 'shoutout', kind: 'function', detail: 'Print to console (equivalent to print())', insertText: 'shoutout($0)', insertTextRules: 4 },
@@ -77,7 +75,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
                 '\t$0',
                 '}'
             ].join('\n'),
-            insertTextRules: 4 // snippets
+            insertTextRules: 4
         },
         {
             label: 'conditional',
@@ -94,15 +92,14 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
             ].join('\n'),
             insertTextRules: 4
         },
-        // ... other snippets remain the same
     ];
 
-    // Define the Vibe language tokens with explicit styling
+    //Vibe language tokens with explicit styling
     const defineVibeLanguage = (monaco: any) => {
         // Register language
         monaco.languages.register({ id: 'vibe' });
 
-        // Define token styles with custom theme
+        // token styles with custom theme
         monaco.editor.defineTheme('vibe-purple', {
             base: 'vs-dark',
             inherit: true,
@@ -118,8 +115,8 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
                 { token: 'datatype', foreground: '4EC9B0', fontStyle: 'italic' },
             ],
             colors: {
-                'editor.background': '#0f0a27', // Custom purple background
-                'editor.lineHighlightBackground': '#1b1243', // Slightly lighter for line highlight
+                'editor.background': '#0f0a27',
+                'editor.lineHighlightBackground': '#1b1243',
                 'editorCursor.foreground': '#d4d4d4',
                 'editor.selectionBackground': '#264f78',
                 'editor.inactiveSelectionBackground': '#3a3d41',
@@ -309,7 +306,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
         editorRef.current = editor;
         monacoRef.current = monaco;
 
-        // Define and register our custom language
+        // Define/register custom language
         defineVibeLanguage(monaco);
 
         // Apply the custom theme

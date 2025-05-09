@@ -9,7 +9,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Navigate to="/vibeprogramminglanguage/home" replace />} />
 
-        {/* Main route with nested routing inside */}
+        {/* Main route */}
         <Route path="/vibeprogramminglanguage/*" element={<VibeCompiler />} />
       </Routes>
     </Router>
