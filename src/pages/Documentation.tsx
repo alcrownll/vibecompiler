@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import CodeBlock from '../CodeBlock'
 
 const Documentation = () => {
   const [selectedSection, setSelectedSection] = useState('');
@@ -113,10 +114,9 @@ const Documentation = () => {
 
             <li>
               <strong>First Program:</strong>
-               <pre className="bg-[#1f1f1f] p-4 rounded-lg text-sm overflow-x-auto text-white mt-2 max-w-md">
-        {`starterPack
-            shoutout("Welcome to Vibe!")`}
-              </pre>
+               <CodeBlock>
+              {`starterPack FirstProgram {\n\tshoutout("Welcome to Vibe!")\n}`}
+            </CodeBlock>
             </li>
           </ul>
         </section>
@@ -127,17 +127,18 @@ const Documentation = () => {
           <ul className="list-disc pl-5 space-y-4">
             <li>
               <strong>Program Declaration:</strong> Every Vibe program starts with <code>starterPack</code>, marking the entry point.
-              <pre className="bg-[#1f1f1f] p-4 rounded-lg text-sm overflow-x-auto text-white mt-2 max-w-md">
-        {`starterPack
-            shoutout("Welcome to Vibe!")`}
-              </pre>
+              <CodeBlock>
+              {`starterPack MyProgram {\n\tshoutout("Let's Vibe code")\n}`}
+            </CodeBlock>
             </li>
 
             <li>
               <strong>Comments:</strong> Single-line comments begin with the <code>~</code> symbol.
-              <pre className="bg-[#1f1f1f] p-4 rounded-lg text-sm overflow-x-auto text-white mt-2 max-w-md">
-        {`~ This is a comment`}
-              </pre>
+            <CodeBlock>
+              {`~ This is a comment`}
+            </CodeBlock>
+
+
             </li>
 
             <li>
@@ -155,51 +156,51 @@ const Documentation = () => {
           <ul className="list-disc ml-6 space-y-4">
             <li>
               <strong>clout</strong> — Integer (whole numbers)
-              <pre className="bg-[#1f1f1f] p-4 rounded-lg text-sm text-white overflow-x-auto mt-2 max-w-md">
-        {`clout number = 10`}
-              </pre>
+             <CodeBlock>
+              {`clout number = 10`}
+            </CodeBlock>
             </li>
 
             <li>
               <strong>ratio</strong> — Float (decimal numbers)
-              <pre className="bg-[#1f1f1f] p-4 rounded-lg text-sm text-white overflow-x-auto mt-2 max-w-md">
-        {`ratio price = 3.14`}
-              </pre>
+              <CodeBlock>
+              {`ratio price = 3.14`}
+            </CodeBlock>
             </li>
 
             <li>
               <strong>tea</strong> — String (text values)
-              <pre className="bg-[#1f1f1f] p-4 rounded-lg text-sm text-white overflow-x-auto mt-2 max-w-md">
-        {`tea name = "Vibe"`}
-              </pre>
+              <CodeBlock>
+              {`tea name = "Aliah"`}
+            </CodeBlock>
             </li>
 
             <li>
               <strong>mood</strong> — Boolean (true/false)
-              <pre className="bg-[#1f1f1f] p-4 rounded-lg text-sm text-white overflow-x-auto mt-2 max-w-md">
-        {`mood isHappy = noCap`}
-              </pre>
+              <CodeBlock>
+              {`mood isHappy = noCap`}
+            </CodeBlock>
             </li>
 
             <li>
               <strong>gang</strong> — Array (ordered collections)
-              <pre className="bg-[#1f1f1f] p-4 rounded-lg text-sm text-white overflow-x-auto mt-2 max-w-md">
-        {`gang nums = [1, 2, 3]`}
-              </pre>
+              <CodeBlock>
+              {`gang nums = [1,2,3]`}
+            </CodeBlock>
             </li>
 
             <li>
               <strong>wiki</strong> — Dictionary (key-value pairs)
-              <pre className="bg-[#1f1f1f] p-4 rounded-lg text-sm text-white overflow-x-auto mt-2 max-w-md">
-        {`wiki user = {name: "Alice", age: 25}`}
-              </pre>
+              <CodeBlock>
+              {`wiki user = {name: "Alice", age: 25}`}
+            </CodeBlock>
             </li>
 
             <li>
               <strong>ghosted</strong> — Null (no value / uninitialized)
-              <pre className="bg-[#1f1f1f] p-4 rounded-lg text-sm text-white overflow-x-auto mt-2 max-w-md">
-        {`data = ghosted`}
-              </pre>
+              <CodeBlock>
+              {`data = ghosted`}
+            </CodeBlock>
             </li>
           </ul>
         </section>
@@ -211,24 +212,23 @@ const Documentation = () => {
           <ul className="list-disc ml-6 space-y-4">
             <li>
               <strong>Arithmetic Operators</strong> — Perform basic math operations.
-              <pre className="bg-[#1f1f1f] p-4 rounded-lg text-sm text-white overflow-x-auto mt-2 max-w-md">
-        {`+, -, *, /, %`}
-              </pre>
+              <CodeBlock>
+              {`+, -, *, /, %`}
+            </CodeBlock>
             </li>
 
             <li>
               <strong>Comparison Operators</strong> — Compare values.
-              <pre className="bg-[#1f1f1f] p-4 rounded-lg text-sm text-white overflow-x-auto mt-2 max-w-md">
-        {`==, !=`}
-              </pre>
+               <CodeBlock>
+              {`==, !=`}
+            </CodeBlock>
             </li>
 
             <li>
               <strong>Logical Operators</strong> — Combine boolean expressions.
-              <pre className="bg-[#1f1f1f] p-4 rounded-lg text-sm text-white overflow-x-auto mt-2 max-w-md">
-        {`&&  // and
-        ||  // or`}
-              </pre>
+               <CodeBlock>
+              {`~ and/or operators\n&&, ||`}
+            </CodeBlock>
             </li>
           </ul>
         </section>
@@ -241,40 +241,31 @@ const Documentation = () => {
           <ul className="list-disc ml-6 space-y-4">
             <li>
               <strong>If Statement</strong> — Start with <code>smash</code>.
-              <pre className="bg-[#1f1f1f] p-4 rounded-lg text-sm text-white overflow-x-auto mt-2 max-w-md">
-        {`smash condition:
-            shoutout("It's true!")
-        else:
-            shoutout("It's false!")`}
-              </pre>
+              <CodeBlock>
+              {`clout score = 75\n\nsmash(score >= 90) {\n\tshoutout("You got an A! Major flex.")\n} pass {\n\tshoutout("Fumbled. Time to bounce back.")\n}`}
+                </CodeBlock>
             </li>
 
             <li>
               <strong>Else-If</strong> — Use <code>maybe</code> for intermediate conditions.
-              <pre className="bg-[#1f1f1f] p-4 rounded-lg text-sm text-white overflow-x-auto mt-2 max-w-md">
-        {`smash condition:
-            shoutout("It's true!")
-        maybe condition2:
-            shoutout("It's maybe true!")
-        else:
-            shoutout("It's false!")`}
-              </pre>
+        <CodeBlock>
+              {`clout score = 75\nmood passed = noCap\n\nsmash(score >= 90) {\n\tshoutout("You got an A! Major flex.")\n} maybe(score >= 80) {\n\tshoutout("Solid B! Keep grinding.")\n} maybe(score >= 70 && passed == noCap) {\n\tshoutout("You passed with a C. Still in the game.")\n} pass {\n\t("Fumbled. Time to bounce back.")\n}`}
+                </CodeBlock>
             </li>
 
             <li>
               <strong>While Loop</strong> — Use <code>grind</code> to loop while a condition is true.
-              <pre className="bg-[#1f1f1f] p-4 rounded-lg text-sm text-white overflow-x-auto mt-2 max-w-md">
-        {`grind condition:
-            shoutout("Still grinding!")`}
-              </pre>
+            <CodeBlock>
+              {`clout feeling\nclout pressure = 5\n\ngrind(feeling != pressure) {\n\tshoutout("I need a drink...")\n}`}
+            </CodeBlock>
             </li>
 
             <li>
               <strong>For Loop</strong> — Use <code>yeet</code> for a fixed-range loop.
-              <pre className="bg-[#1f1f1f] p-4 rounded-lg text-sm text-white overflow-x-auto mt-2 max-w-md">
-        {`yeet i = 0 to 5:
-            shoutout("Yeeting!")`}
-              </pre>
+              <CodeBlock>
+              {`yeet i in range(5):\n\tshoutout(i)
+")`}
+            </CodeBlock>
             </li>
           </ul>
         </section>
