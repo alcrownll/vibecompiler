@@ -29,11 +29,8 @@ const Documentation = () => {
     { id: 'data-types', label: 'Data Types' },
     { id: 'operators', label: 'Operators' },
     { id: 'control-flow', label: 'Control Flow' },
-    { id: 'functions', label: 'Functions' },
     { id: 'input-output', label: 'Input & Output' },
     { id: 'error-handling', label: 'Error Handling' },
-    { id: 'code-examples', label: 'Code Examples' },
-    { id: 'glossary', label: 'Glossary' },
     { id: 'faq', label: 'FAQ' },
   ];
 
@@ -263,41 +260,25 @@ const Documentation = () => {
             <li>
               <strong>For Loop</strong> — Use <code>yeet</code> for a fixed-range loop.
               <CodeBlock>
-              {`yeet i in range(5):\n\tshoutout(i)
-")`}
+              {`yeet i in range(5):\n\tshoutout(i)`}
             </CodeBlock>
             </li>
           </ul>
         </section>
 
 
-        <section id="functions" className="mb-8">
-          <h2 className="text-2xl font-semibold mb-2">💅 Functions</h2>
-          <p className="mb-2"><strong>Function Declaration:</strong> Use the <code>serve</code> keyword to define a function.</p>
-          <pre className="bg-[#1f1f1f] p-4 rounded-lg text-sm text-white overflow-x-auto max-w-md mb-4">
-        {`serve greet(name: tea) -> tea:
-            shoutout("Hello, " + name)`}
-          </pre>
-
-          <p className="mb-2"><strong>Function Call:</strong></p>
-          <pre className="bg-[#1f1f1f] p-4 rounded-lg text-sm text-white overflow-x-auto max-w-md">
-        {`greet("Alice")`}
-          </pre>
-        </section>
-
-
         <section id="input-output" className="mb-8">
-          <h2 className="text-2xl font-semibold mb-2">📥📤 Input & Output</h2>
+          <h2 className="text-2xl font-semibold mb-2">📥 Input & Output</h2>
 
           <p className="mb-2"><strong>Output:</strong> Use <code>shoutout()</code> to print to the console.</p>
-          <pre className="bg-[#1f1f1f] p-4 rounded-lg text-sm text-white overflow-x-auto max-w-md mb-4">
-        {`shoutout("Hello, world!")`}
-          </pre>
+           <CodeBlock>
+              {`shoutout("Hello, world!")`}
+            </CodeBlock>
 
           <p className="mb-2"><strong>Input:</strong> <code>spillTheTea()</code> will be introduced in a future version to support user input.</p>
-          <pre className="bg-[#1f1f1f] p-4 rounded-lg text-sm text-white overflow-x-auto max-w-md">
-        {`~ Not yet implemented in this version.`}
-          </pre>
+          <CodeBlock>
+              {`~ not yet implemented in this version`}
+            </CodeBlock>
         </section>
 
 
@@ -317,59 +298,13 @@ const Documentation = () => {
         </ul>
       </section>
 
-
-      <section id="code-examples" className="mb-8">
-          <h2 className="text-2xl font-semibold mb-2">📚 Code Examples</h2>
-          <p className="mb-4">Here are some basic examples of Vibe in action:</p>
-
-          <h3 className="text-xl font-semibold mb-2">Hello World Example:</h3>
-          <pre className="bg-[#1f1f1f] p-4 rounded-lg text-sm overflow-x-auto">
-            {`starterPack
-            shoutout("Hello, world!")`}
-          </pre>
-
-          <h3 className="text-xl font-semibold mb-2">If-Else Example:</h3>
-          <pre className="bg-[#1f1f1f] p-4 rounded-lg text-sm overflow-x-auto">
-            {`starterPack
-            let number = 10 ~ clout
-            smash number > 5:
-                shoutout("Number is greater than 5!")
-            else:
-                shoutout("Number is 5 or less.")`}
-          </pre>
-
-          <h3 className="text-xl font-semibold mb-2">Vibe Example (Mood Check):</h3>
-          <pre className="bg-[#1f1f1f] p-4 rounded-lg text-sm overflow-x-auto">
-            {`let's vibe mood = fr
-            on god (mood) {
-                say "we vibin fr"
-            }`}
-          </pre>
-        </section>
-
-
-        <section id="glossary" className="mb-8">
-        <h2 className="text-2xl font-semibold mb-2">📖 Glossary</h2>
-        <ul className="list-disc ml-6 space-y-2">
-          <li><strong>StarterPack</strong> — The main entry point for a Vibe program.</li>
-          <li><strong>clout</strong> — Integer data type.</li>
-          <li><strong>ratio</strong> — Float data type.</li>
-          <li><strong>tea</strong> — String data type.</li>
-          <li><strong>mood</strong> — Boolean data type.</li>
-          <li><strong>gang</strong> — Array/List data type.</li>
-          <li><strong>wiki</strong> — Dictionary/Map data type.</li>
-          <li><strong>ghosted</strong> — Null value.</li>
-        </ul>
-      </section>
-
-
       <section id="faq" className="mb-8">
-          <h2 className="text-2xl font-semibold mb-4">❓ FAQ</h2>
+          <h2 className="text-2xl font-semibold mb-4">❓FAQ</h2>
 
           <div className="space-y-6">
             <div>
               <h3 className="text-lg font-semibold">Is VibeLang a real programming language?</h3>
-              <p>Yes! VibeLang is a real, functioning language with its own compiler. It’s designed to make coding more fun and intuitive, especially for younger audiences.</p>
+              <p>Yes! VibeLang is a real, functioning language with its own compiler. It's designed to make coding more fun and intuitive, especially for younger audiences.</p>
             </div>
 
             <div>
@@ -391,7 +326,14 @@ const Documentation = () => {
               <h3 className="text-lg font-semibold">Can I contribute?</h3>
               <p>Yes! VibeLang is open source. Feel free to contribute on <a href="https://github.com/alcrownll/vibecompiler" target="_blank" className="text-blue-500 underline">GitHub</a>.</p>
             </div>
+
+             <div>
+              <h3 className="text-lg font-semibold">NOTE: </h3>
+              <p>This project is a continous work in progress. While it is functional, you may encounter areas that require improvement or features that are not yet fully optimized. </p>
+            </div>
           </div>
+
+           
         </section>
 
       </div>
