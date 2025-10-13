@@ -1,6 +1,8 @@
-# React + TypeScript + Vite
+# React + TypeScript + Vite Custom Programming Language Project
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This project is for CS ELECTIVE-COMPILER where were required to create our own Custom Programming Language with its own corresponding compiler.
+
+Herein this project consists Vibe Programming Language, a proglan inspired from Gen Z slang.
 
 Currently, two official plugins are available:
 
