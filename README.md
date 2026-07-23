@@ -1,56 +1,136 @@
-# React + TypeScript + Vite Custom Programming Language Project
+# Vibe — A Programming Language Inspired by Gen Z Slang
 
-This project is for CS ELECTIVE-COMPILER where were required to create our own Custom Programming Language with its own corresponding compiler.
+Vibe is a custom programming language with syntax pulled straight from Gen Z slang — `clout` instead of `int`, `shoutout` instead of `print`, `smash` instead of `if` — paired with a full compiler pipeline and a web-based playground where you can write and run Vibe code directly in the browser.
 
-Herein this project consists Vibe Programming Language, a proglan inspired from Gen Z slang.
+Built for **CS Elective – Compiler Design**, this project required designing an original programming language from scratch and implementing a working compiler for it, from lexer to execution.
 
-Currently, two official plugins are available:
+🔗 **Try it live:** https://vibe-compiler.web.app/vibeprogramminglanguage/home 
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## Expanding the ESLint configuration
+## What is Vibe?
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+Vibe keeps the structure of a typical imperative language (variables, functions, conditionals, loops, arrays, dictionaries) but renames every keyword to slang. A "Hello World" style program looks like this:
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+```vibe
+starterPack vibeSample {
+    clout x = 10;
+    tea message = "Vibe check!";
+    mood isVibing = noCap;
+
+    smash (x > 5) {
+        shoutout("x is greater than 5");
+    } maybe (x == 5) {
+        shoutout("x is exactly 5");
+    } pass {
+        shoutout("x is less than 5");
+    }
+
+    grind (x > 0) {
+        x = x - 1;
+    }
+
+    serve addNumbers(clout a, clout b) {
+        return a + b;
+    }
+}
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Keyword cheat sheet
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+| Vibe | Meaning |
+|---|---|
+| `starterPack` | program entry block |
+| `clout` / `ratio` / `tea` / `mood` | int / float / string / boolean |
+| `gang` / `wiki` | array / dictionary |
+| `noCap` / `cap` / `ghosted` | true / false / null |
+| `shoutout` | print |
+| `spillTheTea` | input |
+| `smash` / `maybe` / `pass` | if / else if / else |
+| `grind` | while loop |
+| `yeet` | for loop |
+| `serve` | function declaration |
+| `staph` | break |
+| `itsGiving` | typeof |
+| `chooseYourFighter` | switch |
+| `tryhard` / `flopped` | try / catch |
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+---
+
+## How it works
+
+Vibe is a real compiler, not a toy interpreter — code you write goes through the full pipeline before it runs:
+
+```
+Source (.vibe) → Lexer → Parser → Semantic Analyzer → Type Checker
+              → Intermediate Code Generator → Optimizer → Code Generator → Virtual Machine
+```
+
+- **Lexer** — tokenizes Vibe source using a regex-based scanner, mapping slang keywords to their underlying token types.
+- **Parser** — builds an AST from the token stream.
+- **Semantic Analyzer / Type Checker** — validates scoping, declarations, and types before execution.
+- **Intermediate Code Generator + Optimizer** — lowers the AST into an intermediate representation and applies optimization passes.
+- **Code Generator + Virtual Machine** — executes the final program and streams output back to the browser.
+
+## The playground
+
+The frontend is a browser-based IDE for writing and running Vibe code:
+
+- **Monaco-powered editor** (the same engine behind VS Code) for syntax highlighting and a familiar editing experience.
+- **Terminal-style output console** (built with xterm.js) that shows compilation errors and program output as it runs.
+- **Multilingual UI** — available in English, Tagalog, and Bisaya/Cebuano via i18next.
+- Sample programs to help new users learn the syntax quickly.
+
+---
+
+## Tech stack
+
+**Frontend**
+- React + TypeScript + Vite
+- Tailwind CSS
+- Monaco Editor
+- xterm.js
+- react-i18next (EN / TL / Bisaya)
+- Firebase Hosting
+
+**Backend**
+- Python + FastAPI
+- Custom lexer, parser, semantic analyzer, type checker, intermediate code generator, optimizer, and virtual machine (no external parser-generator libraries — the whole pipeline is hand-written)
+- Deployed on Render
+
+---
+
+## Running it locally
+
+### Prerequisites
+- Node.js 18+
+- Python 3.11+
+
+### Setup
+
+```bash
+# clone the repo
+git clone [ADD REPO URL]
+cd vibecompiler
+
+# install frontend dependencies
+npm install
+
+# install backend dependencies
+pip install -r backend/requirements.txt
+```
+
+### Development
+
+```bash
+# runs the Vite dev server and the FastAPI backend together
+npm run dev
+```
+
+The frontend will be available at `http://localhost:5173`, and the backend API at whatever port `backend/run.py` starts on (default FastAPI/uvicorn port).
+
+### Build for production
+
+```bash
+npm run build
 ```
